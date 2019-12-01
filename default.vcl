@@ -258,11 +258,11 @@ sub vcl_hit {
   # load sky high. Secondly - nobody likes to wait. To deal with this we can instruct Varnish to keep the objects in cache
   # beyond their TTL and to serve the waiting requests somewhat stale content.
 
-# if (!std.healthy(req.backend_hint) && (obj.ttl + obj.grace > 0s)) {
-#   return (deliver);
-# } else {
-#   return (miss);
-# }
+  # if (!std.healthy(req.backend_hint) && (obj.ttl + obj.grace > 0s)) {
+  #   return (deliver);
+  # } else {
+  #   return (miss);
+  # }
 
   # We have no fresh fish. Lets look at the stale ones.
   if (std.healthy(req.backend_hint)) {
@@ -270,11 +270,13 @@ sub vcl_hit {
     if (obj.ttl + 10s > 0s) {
       #set req.http.grace = "normal(limited)";
       return (deliver);
+    }
   } else {
     # backend is sick - use full grace
-      if (obj.ttl + obj.grace > 0s) {
+    if (obj.ttl + obj.grace > 0s) {
       #set req.http.grace = "full";
       return (deliver);
+    }
   }
 }
 
