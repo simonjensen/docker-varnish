@@ -1,3 +1,3 @@
-FROM varnish:6.3.1
+FROM varnish:6.6.2-alpine
 
 ADD default.vcl /etc/varnish/default.vcl
